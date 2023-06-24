@@ -8,6 +8,7 @@ describe('Create an order', () => {
     it('should set the address', async () => {
         await browser.url(`/`)
         await page.fillAddresses('East 2nd Street, 601', '1300 1st St');
+        expect(await $(page.tariffModal)).toBeExisting();
     })
     
     // 2. Test for selecting "Supportive" taxi plan
@@ -17,6 +18,7 @@ describe('Create an order', () => {
         const supportivePlanButton = await $(page.supportivePlanButton)
         await supportivePlanButton.waitForDisplayed();
         await supportivePlanButton.click();
+        await expect(supportivePlanButton).toBeEnabled();
     })
 
     // 3.1 Test for opening phone number modal
@@ -60,7 +62,7 @@ describe('Create an order', () => {
         const cvvCode = helper.getCVVCode();
         await cvvCodeField.setValue(cvvCode);
         // Imitating user prssing "Tab" button, so 'Link' button will become active
-        await browser.keys("\uE004");
+        await browser.keys(page.tabButton);
         browser.pause(3000);
         const linkButton = await $(page.linkButton);
         await linkButton.waitForDisplayed();
@@ -75,7 +77,7 @@ describe('Create an order', () => {
         await page.fillAddresses('East 2nd Street, 601', '1300 1st St');
         const messageForDriverField = await $(page.messageForDriverField);
         await messageForDriverField.waitForDisplayed();
-        const driverMessageInput = await $('//input[@name="comment"]');
+        const driverMessageInput = await $(page.driverMessageField);
         await driverMessageInput.setValue("Hello, driver!");
         const displayedMessage = await driverMessageInput.getValue();
         await expect(displayedMessage).toBe("Hello, driver!");
@@ -115,10 +117,11 @@ describe('Create an order', () => {
         await orderButton.click();
         const orderModal = await $(page.carSearchModal);
         await orderModal.waitForDisplayed();
-        // For some reason, test is filing in Firefox, but not in Chrome
+        await expect(orderModal).toBeExisting();
+        // For some reason, search modal dosen't open as intended in Firefox
     })
     // 9. Waiting for the driver info to appear in the modal
-    it(' driver info should appear in the modal', async () => {
+    it('should dislpay driver info in the modal', async () => {
         await browser.url(`/`)
         await page.fillAddresses('East 2nd Street, 601', '1300 1st St');
         const orderButton = await $(page.orderButton);
@@ -130,7 +133,8 @@ describe('Create an order', () => {
         browser.pause(50000);
         const orderNumber = await $(page.orderNumber);
         await orderNumber.waitForDisplayed();
-        // This test is also failing in Chrome, sometimes it works in Firefox, sometimes not, not sure why
+        await expect(orderNumber).toBeExisting();
+        // Test resulted in a bug, Searching for a taxi modal pops up, but driver info dosen't appear even after a delay
     })  
 })
 

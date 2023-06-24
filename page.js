@@ -7,6 +7,7 @@ module.exports = {
     cardNumberField: '#number',
     cvvCodeField: '//input[@id="code" and @class="card-input"]',
     messageForDriverField: '#comment',
+    driverMessageField: '//input[@name="comment"]',
     // Buttons
     callATaxiButton: 'button=Call a taxi',
     phoneNumberButton: '//div[starts-with(text(), "Phone number")]',
@@ -24,6 +25,9 @@ module.exports = {
     paymentMethodModal: '//div[@class="payment-picker open"]',
     carSearchModal: '//div[@class="order-body"]',
     orderNumber: '//div[@class="order-number"]',
+    tariffModal: '//div[@class="tariff-picker shown"]',
+    // Browser keys
+    tabButton: '\uE004',
     // Functions
     fillAddresses: async function(from, to) {
         const fromField = await $(this.fromField);

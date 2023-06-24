@@ -120,6 +120,7 @@ describe('Create an order', () => {
         const orderNumber = await $(page.orderNumber);
         await orderNumber.waitForDisplayed();
         await expect(orderNumber).toBeExisting();
+        // I've changed tariff to Business, but test is still failing, according to the logs timeout happens after 10000ms, not 50000ms as I set,not sure if it is a problem with browser.pause() or something else or something else :\
     })  
 })
 

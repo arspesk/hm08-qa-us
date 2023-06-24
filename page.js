@@ -14,6 +14,7 @@ module.exports = {
     nextButton: 'button=Next',
     confirmButton: 'button=Confirm',
     supportivePlanButton: '//div[starts-with(text(), "Supportive")]',
+    businessPlanButton: '//div[starts-with(text(), "Business")]',
     paymentMethodButton: '//div[@class="pp-text"]',
     addCardButton: '//div[starts-with(text(), "Add card")]',
     linkButton: 'div[class="pp-buttons"] button[type="submit"]',
@@ -64,5 +65,26 @@ module.exports = {
         const code = await requests[0].response.body.code
         await codeField.setValue(code)
         await $(this.confirmButton).click()
+    },
+    addCreditCard: async function(cardNumber, cvvCode) {
+        const paymentMethodButton = await $(this.paymentMethodButton);
+        await paymentMethodButton.waitForDisplayed();
+        await paymentMethodButton.click();
+        const paymentMethodModal = await $(this.paymentMethodModal);
+        await paymentMethodModal.waitForDisplayed();
+        const addCardButton = await $(this.addCardButton);
+        await addCardButton.waitForDisplayed();
+        await addCardButton.click();
+        const cardNumberField = await $(this.cardNumberField);
+        await cardNumberField.waitForDisplayed();
+        await cardNumberField.setValue(cardNumber);
+        const cvvCodeField = await $(this.cvvCodeField);
+        await cvvCodeField.waitForDisplayed();
+        await cvvCodeField.setValue(cvvCode);
+        // Imitating user prssing "Tab" button, so 'Link' button will become active
+        await browser.keys(this.tabButton);
+        const linkButton = await $(this.linkButton);
+        await linkButton.waitForDisplayed();
+        await linkButton.click();
     },
 };

@@ -45,28 +45,9 @@ describe('Create an order', () => {
     it('should add a credit card', async () => {
         await browser.url(`/`)
         await page.fillAddresses('East 2nd Street, 601', '1300 1st St');
-        const paymentMethodButton = await $(page.paymentMethodButton);
-        await paymentMethodButton.waitForDisplayed();
-        await paymentMethodButton.click();
-        const paymentMethodModal = await $(page.paymentMethodModal);
-        await paymentMethodModal.waitForDisplayed();
-        const addCardButton = await $(page.addCardButton);
-        await addCardButton.waitForDisplayed();
-        await addCardButton.click();
-        const cardNumberField = await $(page.cardNumberField);
-        await cardNumberField.waitForDisplayed();
         const cardNumber = helper.getCreditCardNumber();
-        await cardNumberField.setValue(cardNumber);
-        const cvvCodeField = await $(page.cvvCodeField);
-        await cvvCodeField.waitForDisplayed();
         const cvvCode = helper.getCVVCode();
-        await cvvCodeField.setValue(cvvCode);
-        // Imitating user prssing "Tab" button, so 'Link' button will become active
-        await browser.keys(page.tabButton);
-        browser.pause(3000);
-        const linkButton = await $(page.linkButton);
-        await linkButton.waitForDisplayed();
-        await linkButton.click();
+        await page.addCreditCard(cardNumber, cvvCode);
         //Checking if card is added (since its bugged and not displaying 4 last digits, we'll just use its name "Card" :))
         await expect(await helper.getElementByText("Card")).toBeExisting();
     })
@@ -112,18 +93,23 @@ describe('Create an order', () => {
     it('should open the car search modal', async () => {
         await browser.url(`/`)
         await page.fillAddresses('East 2nd Street, 601', '1300 1st St');
+        const businessPlanButton = await $(page.businessPlanButton);
+        await businessPlanButton.waitForDisplayed();
+        await businessPlanButton.click();
         const orderButton = await $(page.orderButton);
         await orderButton.waitForDisplayed();
         await orderButton.click();
         const orderModal = await $(page.carSearchModal);
         await orderModal.waitForDisplayed();
         await expect(orderModal).toBeExisting();
-        // For some reason, search modal dosen't open as intended in Firefox
     })
     // 9. Waiting for the driver info to appear in the modal
     it('should dislpay driver info in the modal', async () => {
         await browser.url(`/`)
         await page.fillAddresses('East 2nd Street, 601', '1300 1st St');
+        const businessPlanButton = await $(page.businessPlanButton);
+        await businessPlanButton.waitForDisplayed();
+        await businessPlanButton.click();
         const orderButton = await $(page.orderButton);
         await orderButton.waitForDisplayed();
         await orderButton.click();
@@ -134,7 +120,6 @@ describe('Create an order', () => {
         const orderNumber = await $(page.orderNumber);
         await orderNumber.waitForDisplayed();
         await expect(orderNumber).toBeExisting();
-        // Test resulted in a bug, Searching for a taxi modal pops up, but driver info dosen't appear even after a delay
     })  
 })
 

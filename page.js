@@ -87,4 +87,8 @@ module.exports = {
         await linkButton.waitForDisplayed();
         await linkButton.click();
     },
+    //Ice cream counter function
+    getIceCreamCount: async function(obj) {
+        return await $(`//div[@class="counter-value" and text()="${obj.toString()}"][1]`);
+    },
 };

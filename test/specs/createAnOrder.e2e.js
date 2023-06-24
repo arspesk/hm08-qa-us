@@ -87,7 +87,7 @@ describe('Create an order', () => {
         await iceCreamsButton.click();
         await iceCreamsButton.click();
         browser.pause(3000);
-        await expect(await helper.getIceCreamCount("2")).toBeExisting();
+        await expect(await page.getIceCreamCount("2")).toBeExisting();
     })
     // 8. The car search modal appears
     it('should open the car search modal', async () => {

@@ -86,7 +86,7 @@ describe('Create an order', () => {
         await iceCreamsButton.waitForDisplayed();
         await iceCreamsButton.click();
         await iceCreamsButton.click();
-        browser.pause(3000);
+        await browser.pause(3000);
         await expect(await page.getIceCreamCount("2")).toBeExisting();
     })
     // 8. The car search modal appears
@@ -116,11 +116,10 @@ describe('Create an order', () => {
         const orderModal = await $(page.carSearchModal);
         await orderModal.waitForDisplayed();
         // We will set a browser pause to make sure that driver info will appear when the timer is over
-        browser.pause(50000);
+        await browser.pause(50000);
         const orderNumber = await $(page.orderNumber);
         await orderNumber.waitForDisplayed();
         await expect(orderNumber).toBeExisting();
-        // I've changed tariff to Business, but test is still failing, according to the logs timeout happens after 10000ms, not 50000ms as I set,not sure if it is a problem with browser.pause() or something else or something else :\
     })  
 })
 
